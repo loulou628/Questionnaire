@@ -42,12 +42,36 @@
             outline: none;
         }
 
+        /* Style de la barre glissante avec dégradé uniquement pour #difficulty */
+        #difficulty {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 35px;
+            border-radius: 5px;
+            background: linear-gradient(to right, rgb(247, 247, 248) 0%,rgb(68, 0, 255) 100%);
+            position: relative;
+        }
+
+        #difficulty::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 35px;
+            height: 35px;
+            background-color: #2a9d8f;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Style classique pour toutes les autres barres */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
+            width: 100%;
             height: 35px;
-            background: #ddd;
             border-radius: 5px;
+            background-color: #ddd; /* Couleur de fond grise classique */
+            position: relative;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -66,10 +90,15 @@
         }
 
         .range-values {
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-top: 5px;
+            font-size: 1em; /* Augmenter la taille de la police */
+            color: #333; /* Couleur plus foncée */
+            font-weight: bold; /* Texte en gras */
+            margin-bottom: 5px; /* Ajuster l'espacement */
             text-align: center;
+            background-color: #e9ecef; /* Arrière-plan gris clair */
+            padding: 5px; /* Ajouter du padding */
+            border-radius: 5px; /* Coins arrondis */
+            border: 1px solid #ccc; /* Ajouter une bordure */
         }
 
         .range-labels {
@@ -147,17 +176,29 @@
             background-color: #f0f0f0;
         }
 
+        #difficulty-value {
+            font-size: 1.2em;
+            color: rgb(56, 52, 52);
+            background-color: #f8fafa;
+            padding: 5px 10px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+
     </style>
 </head>
 <body>
 
+<form id="myForm">
+
     <h1>Questionnaire de Navigation</h1>
 
     <label for="date">Choisissez une date :</label>
-    <input type="date" id="date" name="date">
+    <input type="date" id="date" name="date" required>
 
     <label for="city-search">Rechercher une ville :</label>
-    <input type="text" id="city-search" name="city-search" placeholder="Tapez le nom d'une ville...">
+    <input type="text" id="city-search" name="city-search" placeholder="Tapez le nom d'une ville..." required>
     <div id="suggestions" style="border: 1px solid #ccc; display: none; margin-top: -1px; z-index: 1000; background: #fff; position: absolute; width: 100%; max-height: 150px; overflow-y: auto;"></div>
     <input type="hidden" id="latitude" name="latitude">
     <input type="hidden" id="longitude" name="longitude">
@@ -166,11 +207,11 @@
     <div id="map" style="width: 100%; height: 400px; margin-top: 10px;"></div>
 
     <label for="duration">Durée de l'entraînement (en minutes) :</label>
+    <div class="range-values" id="duration-value">60 minutes</div> <!-- Indicateur déplacé au-dessus -->
     <input type="range" id="duration" name="duration" min="10" max="240" step="5" value="60" oninput="updateDuration()">
     <div class="range-labels">
         <span>10</span><span>80</span><span>160</span><span>240</span>
     </div>
-    <div class="range-values" id="duration-value">60 minutes</div>
 
     <label>Type d'entraînement :</label>
     <div class="checkbox-container">
@@ -191,13 +232,14 @@
     </div>
 
     <label for="difficulty">Niveau de difficulté (1 à 10) :</label>
+    <div class="range-values" id="difficulty-value">5</div> <!-- Indicateur déplacé au-dessus -->
     <input type="range" id="difficulty" name="difficulty" min="0" max="10" step="0.5" value="5" oninput="updateDifficulty()">
     <div class="range-labels">
         <span>1</span><span>3</span><span>5</span><span>7</span><span>10</span>
     </div>
-    <div class="range-values" id="difficulty-value">5</div>
 
     <label for="wind-range">Plage de vent (en noeuds) :</label>
+    <div class="range-values" id="wind-values">10 - 20 noeuds</div> <!-- Indicateur déplacé au-dessus -->
     <div class="range-container">
         <input type="range" id="wind-min" name="wind-min" min="0" max="54" value="10" oninput="updateWindRange()">
         <input type="range" id="wind-max" name="wind-max" min="0" max="54" value="20" oninput="updateWindRange()">
@@ -205,9 +247,9 @@
     <div class="range-labels">
         <span>0</span><span>20</span><span>40</span><span>54</span>
     </div>
-    <div class="range-values" id="wind-values">10 - 20 noeuds</div>
 
     <label for="wind-dir-range">Plage de direction du vent (en degrés) :</label>
+    <div class="range-values" id="wind-dir-values">0° (N) - 180° (S)</div> <!-- Indicateur déplacé au-dessus -->
     <div class="range-container">
         <input type="range" id="wind-dir-min" name="wind-dir-min" min="0" max="360" value="0" oninput="updateWindDirRange()">
         <input type="range" id="wind-dir-max" name="wind-dir-max" min="0" max="360" value="180" oninput="updateWindDirRange()">
@@ -215,9 +257,10 @@
     <div class="range-labels">
         <span>0°</span><span>90°</span><span>180°</span><span>270°</span><span>360°</span>
     </div>
-    <div class="range-values" id="wind-dir-values">0° - 180°</div>
 
     <button type="submit">Soumettre</button>
+
+</form>
 
     <script>
         // Initialisation de la carte
@@ -249,11 +292,12 @@
                             const div = document.createElement("div");
                             div.textContent = city.display_name;
                             div.onclick = function () {
-                                citySearchInput.value = city.display_name; // Mettre à jour le champ de texte
+                                citySearchInput.value = city.display_name; // Mettre à jour le champ de texte avec le nom de la ville
+                                console.log("Ville sélectionnée:", city.display_name); // Debug pour vérifier la ville
                                 document.getElementById("latitude").value = city.lat; // Mettre à jour la latitude
                                 document.getElementById("longitude").value = city.lon; // Mettre à jour la longitude
                                 marker.setLatLng([city.lat, city.lon]); // Mettre à jour le marqueur
-                                map.setView([city.lat, city.lon], 12); // Centrer la carte sur la ville
+                                map.setView([city.lat, city.lon], 10); // Centrer la carte sur la ville
                                 suggestionsDiv.style.display = "none"; // Masquer les suggestions
                             };
                             suggestionsDiv.appendChild(div);
@@ -265,6 +309,7 @@
                 });
         });
 
+
         // Fonction pour mettre à jour la durée
         function updateDuration() {
             const durationValue = document.getElementById("duration-value");
@@ -272,11 +317,42 @@
             durationValue.textContent = `${duration} minutes`;
         }
 
-        // Fonction pour mettre à jour la difficulté
+        // Fonction pour mettre à jour la couleur et la valeur de la barre de difficulté
         function updateDifficulty() {
-            const difficultyValue = document.getElementById("difficulty-value");
-            const difficulty = document.getElementById("difficulty").value;
-            difficultyValue.textContent = difficulty;
+            const difficulty = document.getElementById('difficulty');
+            const value = difficulty.value;
+            const difficultyValue = document.getElementById('difficulty-value');
+
+            // Afficher la valeur de la difficulté au-dessus de la barre
+            difficultyValue.textContent = value;
+
+            // Calculer la position en pourcentage
+            const percentage = ((value - difficulty.min) / (difficulty.max - difficulty.min)) * 100;
+
+            // Dégradé dynamique du vert (1) au rouge (10) en fonction de la valeur
+            const color = `linear-gradient(to right, green ${percentage}%, #ddd ${percentage}%)`;
+
+            // Appliquer le dégradé à la barre de range
+            difficulty.style.background = color;
+        }
+
+        // Initialiser la barre au chargement avec la couleur correcte
+        window.onload = function() {
+            updateDifficulty();
+        };
+
+        // Fonction pour mettre à jour la difficulté avec la couleur fluide
+        function updateDifficulty() {
+            const difficulty = document.getElementById('difficulty');
+            const value = difficulty.value;
+            const difficultyValue = document.getElementById('difficulty-value');
+
+            // Afficher la valeur de la difficulté au-dessus de la barre
+            difficultyValue.textContent = value;
+
+
+            // Appliquer la couleur de fond au texte de la valeur
+            difficultyValue.style.backgroundColor = bgColor;
         }
 
         // Fonction pour mettre à jour la plage de vent
@@ -286,16 +362,78 @@
             document.getElementById("wind-values").textContent = `${windMin} - ${windMax} noeuds`;
         }
 
-        // Fonction pour mettre à jour la plage de direction du vent
         function updateWindDirRange() {
             const windDirMin = document.getElementById("wind-dir-min").value;
             const windDirMax = document.getElementById("wind-dir-max").value;
-            document.getElementById("wind-dir-values").textContent = `${windDirMin}° - ${windDirMax}°`;
+
+            const windDirMinLetter = degreesToDirection(windDirMin);
+            const windDirMaxLetter = degreesToDirection(windDirMax);
+
+            document.getElementById("wind-dir-values").textContent = `${windDirMin}° (${windDirMinLetter}) - ${windDirMax}° (${windDirMaxLetter})`;
+        }
+
+
+        // Fonction pour convertir les degrés en direction du vent (lettres)
+        function degreesToDirection(degrees) {
+            const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
+            const index = Math.round(degrees / 45) % 8;
+            return directions[index];
         }
 
     </script>
+
+<script>
+    document.getElementById("myForm").addEventListener("submit", function (e) {
+            e.preventDefault(); // Empêche le rechargement de la page
+
+            const formData = new FormData(this); // Capture les données du formulaire
+
+            // Récupérer les valeurs cochées des types d'entraînements
+            const navMode = Array.from(document.querySelectorAll('input[name="nav-mode"]:checked'))
+                .map(el => el.value)
+                .join(", ");
+            formData.append("navMode", navMode); // Ajouter à la liste des données envoyées
+
+            // Ajouter les valeurs de la plage de vent
+            const windMin = document.getElementById("wind-min").value;
+            const windMax = document.getElementById("wind-max").value;
+            formData.append("windMin", windMin); // Plage de vent minimale
+            formData.append("windMax", windMax); // Plage de vent maximale
+
+            // Ajouter les valeurs de la plage de direction du vent
+            const windDirMin = document.getElementById("wind-dir-min").value;
+            const windDirMax = document.getElementById("wind-dir-max").value;
+            formData.append("windDirMin", windDirMin); // Direction du vent minimale
+            formData.append("windDirMax", windDirMax); // Direction du vent maximale
+
+            // Récupérer le nom de la ville
+            const city = document.getElementById("city-search").value;
+            formData.append("city-search", city); // Ajouter la ville
+
+            // Envoi des données au script Google Apps Script via une requête POST
+            fetch('https://script.google.com/macros/s/AKfycbyeHHTzo1mFDzw_UfhL7sVBKhmQK9CBPZLlzS1wOb9oaoNcyxKEhLoXjIb1nDCtaO1VtQ/exec', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json()) // Analyser la réponse JSON
+            .then(data => {
+                alert("Données envoyées avec succès !");
+            })
+            .catch(error => {
+                alert("Erreur lors de l'envoi des données.");
+                console.error(error);
+            });
+        });
+    </script>
+
+
 </body>
 </html>
+
+
+
+
+
 
 
 
