@@ -1,0 +1,352 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #2a9d8f;
+    font-size: 1.8em;
+}
+
+p {
+    font-size: 1.2em;
+    color: #264653;
+}
+
+  /* Style pour l'activité sélectionnée */
+  .selected {
+    background-color: #2a9d8f; /* Couleur d'arrière-plan pour l'activité sélectionnée */
+    color: rgb(1, 1, 1); /* Couleur du texte pour l'activité sélectionnée */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Ombre pour se démarquer */
+    transform: scale(1.05); /* Légère augmentation de la taille */
+}
+
+
+#date_activities {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.date-input {
+    margin-bottom: 20px; /* Ajustez la valeur selon vos besoins */
+    
+}
+
+.activity-card {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.activity-card:hover {
+    transform: scale(1.05);
+}
+
+.activity-title {
+    font-size: 1.2em;
+    color: #2a9d8f;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+select, input[type="date"], input[type="range"], button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    outline: none;
+}
+
+
+
+
+/* Style classique pour toutes les autres barres */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 35px;
+    border-radius: 5px;
+    background-color: #ddd; /* Couleur de fond grise classique */
+    position: relative;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 35px;
+    height: 35px;
+    background-color: #2a9d8f;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.range-container {
+    position: relative;
+    margin-top: 15px;
+}
+
+.range-values {
+    font-size: 1em; /* Augmenter la taille de la police */
+    color: #333; /* Couleur plus foncée */
+    font-weight: bold; /* Texte en gras */
+    margin-bottom: 5px; /* Ajuster l'espacement */
+    text-align: center;
+    background-color: #e9ecef; /* Arrière-plan gris clair */
+    padding: 5px; /* Ajouter du padding */
+    border-radius: 5px; /* Coins arrondis */
+    border: 1px solid #ccc; /* Ajouter une bordure */
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 0 5px;
+}
+
+/* Section du formulaire cachée */
+#settings-section {
+    display: none; /* Masquer par défaut */
+    margin-top: 30px;
+}
+
+h2 {
+    text-align: center;
+    color: #2a9d8f;
+}
+
+button {
+    padding: 15px;
+    background-color: #2a9d8f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #23827d;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #2a9d8f;
+    text-align: center;
+    font-size: 1.8em;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #264653;
+}
+
+select, input[type="date"], input[type="range"], button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    outline: none;
+}
+
+/* Style de la barre glissante avec dégradé uniquement pour #difficulty */
+#difficulty, #nav-difficulty{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 35px;
+    border-radius: 5px;
+    background: linear-gradient(to right, rgb(247, 247, 248) 0%,rgb(0, 26, 192) 100%);
+    position: relative;
+}
+
+#difficulty ::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 35px;
+    height: 35px;
+    background-color: #2a9d8f;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Style classique pour toutes les autres barres */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 35px;
+    border-radius: 5px;
+    background-color: #ddd; /* Couleur de fond grise classique */
+    position: relative;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 35px;
+    height: 35px;
+    background-color: #2a9d8f;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.range-container {
+    position: relative;
+    margin-top: 15px;
+}
+
+.range-values {
+    font-size: 1em; /* Augmenter la taille de la police */
+    color: #333; /* Couleur plus foncée */
+    font-weight: bold; /* Texte en gras */
+    margin-bottom: 5px; /* Ajuster l'espacement */
+    text-align: center;
+    background-color: #e9ecef; /* Arrière-plan gris clair */
+    padding: 5px; /* Ajouter du padding */
+    border-radius: 5px; /* Coins arrondis */
+    border: 1px solid #ccc; /* Ajouter une bordure */
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 0 5px;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.checkbox-container label {
+    background-color: #e9ecef;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.checkbox-container input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-container input[type="checkbox"]:checked + label {
+    background-color: #2a9d8f;
+    color: #fff;
+}
+
+button {
+    background-color: #2a9d8f;
+    color: #fff;
+    font-size: 1.2em;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #23827d;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    label {
+        font-size: 1em;
+    }
+
+    button {
+        font-size: 1em;
+    }
+
+    .range-labels {
+        font-size: 0.7em;
+    }
+}
+
+#suggestions div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#suggestions div:hover {
+    background-color: #f0f0f0;
+}
+
+#difficulty-value {
+    font-size: 1.2em;
+    color: rgb(56, 52, 52);
+    background-color: #f8fafa;
+    padding: 5px 10px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* Classe pour simuler un bouton appuyé */
+.activity-card.pressed {
+    background-color: #d1d1d1; /* Couleur plus foncée pour l'effet appuyé */
+    transform: scale(0.98); /* Légère réduction pour effet de pression */
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.2); /* Ombre intérieure */
+    transition: transform 0.2s ease, background-color 0.2s ease; /* Transition douce */
+}
+
+
+/* Styles pour mobile */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+}
