@@ -112,16 +112,36 @@
                 <label for="test-materiel">Test Matériel</label>
                 <input type="checkbox" name="nav-mode" value="PMA" id="pma">
                 <label for="pma">PMA</label>
-                <input type="checkbox" name="nav-mode" value="Nav Technique Manoeuvres" id="nav-technique-manoeuvres">
-                <label for="nav-technique-manoeuvres">Nav Technique Manoeuvres</label>
-                <input type="checkbox" name="nav-mode" value="Nav Technique Speed Test" id="nav-technique-speed-test">
-                <label for="nav-technique-speed-test">Nav Technique Speed Test</label>
+                <input type="checkbox" name="nav-mode" value="Technique Manoeuvres" id="technique-manoeuvres">
+                <label for="technique-manoeuvres">Technique Manoeuvres</label>
+                <input type="checkbox" name="nav-mode" value="Technique Speed Test" id="technique-speed-test">
+                <label for="technique-speed-test">Technique Speed Test</label>
+                <input type="checkbox" name="nav-mode" value="Medal race" id="Medal-race">
+                <label for="Medal-race">Medal race</label>
+                <input type="checkbox" name="nav-mode" value="Sprint racing U" id="sprint-racing-u">
+                <label for="sprint-racing-u">Sprint racing U</label>
+                <input type="checkbox" name="nav-mode" value="Sprint racing course race" id="sprint-racing-course-race">
+                <label for="sprint-racing-course-race">Sprint racing course race</label>
             </div>
         
         
             <label for="nav-difficulty">Niveau de difficulté (1 à 10) :</label>
             <div class="range-values" id="nav-difficulty-value">5</div> <!-- Indicateur déplacé au-dessus -->
             <input type="range" id="nav-difficulty" name="difficulty" min="0" max="10" step="0.5" value="5" oninput="updateDifficulty('nav')">
+            <div class="range-labels">
+                <span>1</span><span>3</span><span>5</span><span>7</span><span>10</span>
+            </div>
+
+            <label for="nav-performance">Niveau de performance (1 à 10) :</label>
+            <div class="range-values" id="performance-value">5</div> <!-- Indicateur déplacé au-dessus -->
+            <input type="range" id="performance" name="performance" min="0" max="10" step="0.5" value="5" oninput="updatePerformance('nav')">
+            <div class="range-labels">
+                <span>1</span><span>3</span><span>5</span><span>7</span><span>10</span>
+            </div>
+
+            <label for="nav-plaisir"> Plaisir perçu sur l'entrainement (1 à 10) :</label>
+            <div class="range-values" id="plaisir-value">5</div> <!-- Indicateur déplacé au-dessus -->
+            <input type="range" id="plaisir" name="plaisir" min="0" max="10" step="0.5" value="5" oninput="updatePlaisir('nav')">
             <div class="range-labels">
                 <span>1</span><span>3</span><span>5</span><span>7</span><span>10</span>
             </div>
@@ -177,6 +197,8 @@
                 <input type="text" id="stabilisateur" name="stabilisateur">
                 <label for="shaft">Shaft :</label>
                 <input type="text" id="shaft" name="shaft">
+                <label for="notes">Notes :</label>
+                <input type="text" id="notes" name="notes">
             </div>
             <button type="submit">Envoyer</button>
 
@@ -188,6 +210,10 @@ const settingsSection = document.getElementById('settings-section');
 const navigationSettingsSection = document.getElementById('navigation-settings-section');
 const difficultyRange = document.getElementById('difficulty');
 const difficultyValue = document.getElementById('difficulty-value');
+const performanceRange = document.getElementById('performance');
+const performanceValue = document.getElementById('performance-value');
+const plaisirRange = document.getElementById('plaisir');
+const plaisirValue = document.getElementById('plaisir-value');
 const durationRange = document.getElementById('duration');
 const durationValue = document.getElementById('duration-value');
 const windMinRange = document.getElementById('wind-min');
@@ -286,6 +312,12 @@ document.getElementById("myForm").addEventListener("submit", function (e) {
     const activities = document.getElementById('activity').value; // Récupérer la valeur d'activité
     formData.append("activities", activities); // Ajouter à formData
 
+
+    const performance = document.getElementById("performance").value; 
+    formData.append("performance", performance); 
+
+
+
     // Ajouter les valeurs de la plage de vent
     const windMin = document.getElementById("wind-min").value;
     const windMax = document.getElementById("wind-max").value;
@@ -334,9 +366,12 @@ document.getElementById("myForm").addEventListener("submit", function (e) {
     const shaft = document.getElementById("shaft").value;
     formData.append("shaft", shaft);
 
+    const notes = document.getElementById("notes").value;
+    formData.append("notes", notes);
+
 
     // Envoi des données au script Google Apps Script via une requête POST
-    fetch('https://script.google.com/macros/s/AKfycbwaXa0or7_w6xO6oE1Nu-4nJU9NXWrkw74Jy23PPQR6IlYLylhFddVW6tpY661lSrrF0g/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbxDENQY3OB5dHvnBhRuMF_Hm6-FvGcvHhCbKRQgS31ZHAFf-JHNiNF3j8-Bb8XHPXqpLQ/exec', {
         method: 'POST',
         body: formData
     })
@@ -366,7 +401,7 @@ document.getElementById("activity-form").addEventListener("submit", function (e)
 
 
     // Envoi des données combinées via une requête POST
-    fetch('https://script.google.com/macros/s/AKfycbwaXa0or7_w6xO6oE1Nu-4nJU9NXWrkw74Jy23PPQR6IlYLylhFddVW6tpY661lSrrF0g/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbyA0GEp52Ftl3YuIzKpCAxcm4fzYooK-evLGn1w7X8kuThZHsNf5JLwhpeDwblz7wPu5Q/exec', {
         method: 'POST',
         body: formData
     })
@@ -427,11 +462,15 @@ function updateDifficulty(formType) {
     }
 }
 
+
+
 // Initialisation par défaut (masquer toutes les sections au démarrage)
 hideAllSections();
 
 // Gérer la mise à jour des curseurs
 difficultyRange.addEventListener('input', updateDifficulty);
+performanceRange.addEventListener('input', updatePerformance);
+plaisirRange.addEventListener('input', updatePlaisir);
 durationRange.addEventListener('input', updateDuration);
 windMinRange.addEventListener('input', updateWindRange);
 windMaxRange.addEventListener('input', updateWindRange);
@@ -444,6 +483,24 @@ window.addEventListener('load', () => {
 });
 
 
+
+// Fonction pour mettre à jour la perfomance
+function updatePerformance(formType) {
+    if (formType === 'nav') {
+        const performanceValueNav = document.getElementById('performance-value');
+        const performanceInputNav = document.getElementById('performance');
+        performanceValueNav.textContent = `${performanceInputNav.value}`;
+    }
+}
+
+// Fonction pour mettre à jour la perfomance
+function updatePlaisir(formType) {
+    if (formType === 'nav') {
+        const plaisirValueNav = document.getElementById('plaisir-value');
+        const plaisirInputNav = document.getElementById('plaisir');
+        plaisirValueNav.textContent = `${plaisirInputNav.value}`;
+    }
+}
 
 
 // Fonction pour mettre à jour la plage de vent
@@ -563,7 +620,6 @@ citySearch.addEventListener('input', (e) => {
 
 </body>
 </html>
-
 
 
 
